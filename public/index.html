@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSK Stream Gallery</title>
+  <style>
+    body { background: #121212; color: white; font-family: sans-serif; margin: 0; }
+    h1 { text-align: center; color: #ff3c00; margin-top: 20px; }
+    #gallery { max-width: 600px; margin: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+    .card { background: #222; border-radius: 10px; padding: 10px; text-align: center; }
+    .card img { width: 100%; border-radius: 8px; }
+    .card a {
+      display: inline-block; margin-top: 10px; padding: 10px 20px;
+      color: #ff3c00; border: 2px solid #ff3c00; border-radius: 6px;
+      text-decoration: none; font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>JSK RedGIFs Viewer</h1>
+  <div id="gallery"></div>
+
+  <script>
+    async function loadVideos() {
+      const res = await fetch("/api/search?q=milf&page=1");
+      const data = await res.json();
+      const gallery = document.getElementById("gallery");
+
+      data.forEach(v => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const img = document.createElement("img");
+        img.src = `/proxy?url=${encodeURIComponent(v.thumbnail)}&type=thumbnail`;
+
+        const link = document.createElement("a");
+        link.href = `player.html?video=${encodeURIComponent(v.video)}&poster=${encodeURIComponent(v.thumbnail)}`;
+        link.textContent = "▶ Play";
+
+        card.appendChild(img);
+        card.appendChild(link);
+        gallery.appendChild(card);
+      });
+    }
+
+    loadVideos();
+  </script>
+</body>
+</html>
