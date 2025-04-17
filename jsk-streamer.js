@@ -16,7 +16,7 @@ async function searchRedgifs(query, page = 1) {
   if (!token) await getToken();
   const res = await axios.get('https://api.redgifs.com/v2/gifs/search', {
     headers: { Authorization: `Bearer ${token}` },
-    params: { search_text: query, count: 20, page }
+    params: { search_text: query, count: 30, page }
   });
   return res.data.gifs.map(v => ({
     video: v.urls.hd || v.urls.sd,
